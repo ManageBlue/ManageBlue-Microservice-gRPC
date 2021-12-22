@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+message Deadline {
+    string id = 1;
+    string title = 2;
+    string date = 3;
+    string projectId = 5;
+}
+
+service DeadlineService {
+    rpc GetAllDeadlines (Empty) returns (DeadlineList) {}
+    rpc GetProjectDeadlines (DeadlineQueryProject) returns (DeadlineList) {}
+}
+
+message DeadlineQueryProject {
+    string projectId = 1;
+}
+
+message Empty {}
+
+message DeadlineList {
+   repeated Deadline deadlines = 1;
+}
