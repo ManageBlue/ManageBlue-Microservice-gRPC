@@ -3,6 +3,37 @@ const PROTO_PATH = "./models/deadlines.proto";
 let protoLoader = require("@grpc/proto-loader");
 const config = require("./config/config")
 
+//----------------------------------------------------------------------------------------------------------------------
+//express
+
+const express = require('express');
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const express_server = express();
+
+// cors settings
+let corsOptions = {
+    //origin: url + ":" + 8080
+    origin: '*'
+};
+express_server.use(cors(corsOptions));
+
+// parse requests of content-type - application/json
+express_server.use(bodyParser.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+express_server.use(bodyParser.urlencoded({ extended: true }));
+
+express_server.listen(config.port, () => {
+    console.log(`Express_Server running on port ${config.port}!`);
+});
+
+express_server.get("/", (req, res) => {
+    res.json({ message: "Express_Server server is running!" });
+});
+
+//----------------------------------------------------------------------------------------------------------------------
+
 
 const options = {
     keepCase: true,
@@ -40,7 +71,7 @@ server.addService(deadlinesProto.DeadlineService.service, {
 });
 
 server.bindAsync(
-    `${config.url}:${config.port}`,
+    `${config.url}:${config.port_gRPC}`,
     grpc.ServerCredentials.createInsecure(),
     (error, port) => {
         console.log(`Server running at http://${config.url}:${port}`);
