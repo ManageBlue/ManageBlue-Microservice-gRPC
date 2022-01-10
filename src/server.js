@@ -2,6 +2,7 @@ const grpc = require("@grpc/grpc-js");
 const PROTO_PATH = "./models/deadlines.proto";
 let protoLoader = require("@grpc/proto-loader");
 const config = require("./config/config")
+let deadlines = [{id: "1", name: "RSO zagovor 1", start: "2022-01-04 14:15", projectId: "61c4580b87283c4e5b3a01cb"},{id: "2", name: "RSO zagovor 2", start: "2022-01-11 14:45", projectId: "61c4580b87283c4e5b3a01cb"},{id: "3", name: "RSO kolokvij", start: "2022-01-11 12:00", projectId: "61c4580b87283c4e5b3a01cb"},{id: "4", name: "MAT kolokvij", start: "2022-01-13 19:00", projectId: "61c4617a87283c4e5b3a01f3"},];
 
 //----------------------------------------------------------------------------------------------------------------------
 //express
@@ -47,13 +48,6 @@ let packageDefinition = protoLoader.loadSync(PROTO_PATH, options);
 const deadlinesProto = grpc.loadPackageDefinition(packageDefinition);
 
 const server = new grpc.Server();
-
-let deadlines = [
-    {id: "1", name: "RSO zagovor 1", start: "2022-01-04 14:15", projectId: "61c4580b87283c4e5b3a01cb"},
-    {id: "2", name: "RSO zagovor 2", start: "2022-01-11 14:45", projectId: "61c4580b87283c4e5b3a01cb"},
-    {id: "3", name: "RSO kolokvij", start: "2022-01-11 12:00", projectId: "61c4580b87283c4e5b3a01cb"},
-    {id: "4", name: "MAT kolokvij", start: "2022-01-13 19:00", projectId: "61c4617a87283c4e5b3a01f3"},
-];
 
 server.addService(deadlinesProto.DeadlineService.service, {
     getAllDeadlines: (_, callback) => {
